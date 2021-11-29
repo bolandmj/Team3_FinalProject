@@ -1,7 +1,9 @@
 //Assigns variables for all objects in game
 let Board = document.querySelector('.board');
 let FirstPaddle = document.querySelector(".firstPaddle");
+let FirstTopPaddle = document.querySelector(".firstTopPaddle");
 let SecondPaddle = document.querySelector(".secondPaddle");
+let SecondBottomPaddle = document.querySelector(".secondBottomPaddle");
 let InitialBall = document.querySelector(".ball");
 let Ball = document.querySelector(".ball");
 let ScoreOne = document.querySelector(".playerOneScore");
@@ -10,7 +12,9 @@ let Message = document.querySelector(".message");
 
 //Gets coordinates of paddles, ball, and board
 let FirstPaddleCoord = FirstPaddle.getBoundingClientRect();
+let FirstTopPaddleCoord = FirstTopPaddle.getBoundingClientRect();
 let SecondPaddleCoord = SecondPaddle.getBoundingClientRect();
+let SecondBottomPaddleCoord = SecondBottomPaddle.getBoundingClientRect();
 let InitialBallCoord = Ball.getBoundingClientRect();
 let BallCoord = InitialBallCoord;
 let BoardCoord = Board.getBoundingClientRect();
@@ -61,6 +65,24 @@ document.addEventListener('keydown', (e) => {
                 ) + 'px'; 
             FirstPaddleCoord = FirstPaddle.getBoundingClientRect();
         }
+        if(e.key == 'a')
+        {
+            FirstTopPaddle.style.left =
+                Math.max(
+                    BoardCoord.left + CommonPaddle.height,
+                    FirstTopPaddleCoord.left - window.innerWidth * 0.06
+                ) + 'px';
+            FirstTopPaddleCoord = FirstTopPaddle.getBoundingClientRect();
+        }
+        if(e.key == 'd')
+        {
+            FirstTopPaddle.style.left =
+                Math.min(
+                    BoardCoord.right - CommonPaddle.height,
+                    FirstTopPaddleCoord.right + window.innerWidth * 0.06
+                ) + 'px';
+            FirstTopPaddleCoord = FirstTopPaddle.getBoundingClientRect();
+        }
         if(e.key == 'ArrowUp')
         {
             SecondPaddle.style.top =
@@ -79,40 +101,63 @@ document.addEventListener('keydown', (e) => {
                 ) + 'px';
             SecondPaddleCoord = SecondPaddle.getBoundingClientRect();
         }
+        if(e.key == 'ArrowLeft')
+        {
+            SecondBottomPaddle.style.left =
+                Math.max(
+                    BoardCoord.left + CommonPaddle.height,
+                    SecondBottomPaddleCoord.left - window.innerWidth * 0.06
+                ) + 'px';
+            SecondBottomPaddleCoord = SecondBottomPaddle.getBoundingClientRect();
+        }
+        if(e.key == 'ArrowRight')
+        {
+            SecondBottomPaddle.style.left =
+                Math.min(
+                    BoardCoord.right - CommonPaddle.height,
+                    SecondBottomPaddleCoord.right + window.innerWidth * 0.06
+                ) + 'px';
+            SecondBottomPaddleCoord = SecondBottomPaddle.getBoundingClientRect();
+        }
     }
     
 });
 
 function moveBall(dx, dy, dxd, dyd)
 {
-    if (BallCoord.top <= BoardCoord.top)
+    if (BallCoord.top <= FirstTopPaddleCoord.bottom &&
+        BallCoord.left <= FirstTopPaddleCoord.right &&
+        BallCoord.right >= FirstTopPaddleCoord.left)
     {
         dyd = 1;
-    }
-    if (BallCoord.bottom >= BoardCoord.bottom)
-    {
-        dyd = 0;
     }
     if (BallCoord.left <= FirstPaddleCoord.right &&
         BallCoord.top >= FirstPaddleCoord.top &&
         BallCoord.bottom <= FirstPaddleCoord.bottom)
     {
         dxd = 1;
-        dx = Math.floor(Math.random() * 4) + 3;
-        dy = Math.floor(Math.random() * 4) + 3;
+        
+    }
+    if (BallCoord.bottom >= SecondBottomPaddleCoord.top &&
+        BallCoord.left <= SecondBottomPaddleCoord.right &&
+        BallCoord.right >= SecondBottomPaddleCoord.left)
+    {
+        dyd = 0;
     }
     if (BallCoord.right >= SecondPaddleCoord.left &&
         BallCoord.top >= SecondPaddleCoord.top &&
         BallCoord.bottom <= SecondPaddleCoord.bottom)
     {
         dxd = 0;
-        dx = Math.floor(Math.random() * 4) + 3;
-        dy = Math.floor(Math.random() * 4) + 3;
+        
     }
     if (BallCoord.left <= BoardCoord.left ||
-        BallCoord.right >= BoardCoord.right)
+        BallCoord.right >= BoardCoord.right ||
+        BallCoord.top <= BoardCoord.top ||
+        BallCoord.bottom >= BoardCoord.bottom)
     {
-        if (BallCoord.left <= BoardCoord.left)
+        if (BallCoord.left <= BoardCoord.left ||
+            BallCoord.top <= BoardCoord.top)
         {
             ScoreTwo.innerHTML = +ScoreTwo.innerHTML + 1;
         }

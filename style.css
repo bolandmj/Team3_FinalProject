@@ -57,10 +57,24 @@ body {
     left: calc(10vw + 30px);
     background-color: white;
 }
+
+.firstTopPaddle {
+    top: calc(7.5vh);
+    right: calc(150px);
+    transform: rotate(90deg);
+    background-color: white;
+}
   
 .secondPaddle {
     top: calc(85vh + 7.5vh - 100px - 55px);
     right: calc(10vw + 30px);
+    background-color: white;
+}
+
+.secondBottomPaddle {
+    top: calc(85vh + 7.5vh - 75px);
+    left: calc(150px);
+    transform: rotate(90deg);
     background-color: white;
 }
   
